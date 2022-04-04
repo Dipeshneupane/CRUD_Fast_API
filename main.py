@@ -1,13 +1,15 @@
 from fastapi import FastAPI
-
+import models
+from database import engine
+import router
 app = FastAPI()
+
+models.Base.metadata.create_all(bind=engine)
 
 
 @app.get('/')
-def index():
-    return {'data': {'name': 'dipesh'}}
+async def Home():
+    return "Welcome Home"
 
 
-@app.get('/about')
-def about():
-    return {'data': {'name': 'dipesh'}}
+app.include_router(router.router, prefix="/book", tags=['book'])
